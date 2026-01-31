@@ -88,10 +88,13 @@ async function main() {
 
     // Detect parent process death via stdin close
     // When Claude exits (normally or abnormally), stdin will close
-    process.stdin.on('end', () => {
+    const shutdown = () => {
       child.kill();
       process.exit(0);
-    });
+    };
+    process.stdin.resume();
+    process.stdin.on('end', shutdown);
+    process.stdin.on('close', shutdown);
 
     child.on('exit', (code, signal) => {
       if (signal) {
