@@ -136,7 +136,7 @@ export async function searchConversations(
 
     return {
       exchange,
-      similarity: mode === 'text' ? undefined : 1 - row.distance,
+      similarity: mode === 'text' ? undefined : 1 - (row.distance * row.distance / 2),
       snippet,
       summary
     } as SearchResult & { summary?: string };

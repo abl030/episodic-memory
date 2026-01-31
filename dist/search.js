@@ -109,7 +109,7 @@ export async function searchConversations(query, options = {}) {
         const snippet = snippetText + (exchange.userMessage.length > 200 ? '...' : '');
         return {
             exchange,
-            similarity: mode === 'text' ? undefined : 1 - row.distance,
+            similarity: mode === 'text' ? undefined : 1 - (row.distance * row.distance / 2),
             snippet,
             summary
         };
