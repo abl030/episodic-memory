@@ -86,16 +86,6 @@ async function main() {
     process.on('SIGINT', () => child.kill('SIGINT'));
     process.on('SIGHUP', () => child.kill('SIGHUP'));
 
-    // Detect parent process death via stdin close
-    // When Claude exits (normally or abnormally), stdin will close
-    const shutdown = () => {
-      child.kill();
-      process.exit(0);
-    };
-    process.stdin.resume();
-    process.stdin.on('end', shutdown);
-    process.stdin.on('close', shutdown);
-
     child.on('exit', (code, signal) => {
       if (signal) {
         process.kill(process.pid, signal);
